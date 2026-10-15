@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Check, FastForward, Inbox, Pause, Play, RotateCcw } from 'lucide-react'
-import { szenarien } from '../data/szenarien'
+import { BEGRUESSUNG, szenarien } from '../data/szenarien'
 import { uhrzeitPlus } from '../data/datum'
 import type { Anruf, Szenario, Zeile } from '../data/typen'
 import { StatusChip } from './StatusChip'
@@ -12,6 +12,7 @@ interface Props {
   onImEingangZeigen: (id: string) => void
   /** Der Anruf ist schon im Eingang geöffnet, dann ist der Knopf nicht mehr die Haupthandlung. */
   imEingangOffen: string | null
+  begruessung: string
 }
 
 function wartezeit(zeile: Zeile, ersteZeile: boolean, schnell: boolean): number {
@@ -23,7 +24,7 @@ function dauer(sekunden: number): string {
   return `${Math.floor(sekunden / 60)}:${String(sekunden % 60).padStart(2, '0')}`
 }
 
-export function AnrufDemo({ onFertig, onImEingangZeigen, imEingangOffen }: Props) {
+export function AnrufDemo({ onFertig, onImEingangZeigen, imEingangOffen, begruessung }: Props) {
   const [szenarioId, setSzenarioId] = useState(szenarien[0].id)
   const [sichtbar, setSichtbar] = useState(0)
   const [ablauf, setAblauf] = useState<Ablauf>('bereit')
@@ -35,7 +36,10 @@ export function AnrufDemo({ onFertig, onImEingangZeigen, imEingangOffen }: Props
   onFertigRef.current = onFertig
 
   const szenario = szenarien.find((s) => s.id === szenarioId) as Szenario
-  const zeilen = szenario.zeilen
+  const zeilen = useMemo(
+    () => szenario.zeilen.map((z) => (z.text === BEGRUESSUNG ? { ...z, text: begruessung } : z)),
+    [szenario, begruessung],
+  )
 
   useEffect(() => {
     if (ablauf !== 'laeuft') return
@@ -87,13 +91,7 @@ export function AnrufDemo({ onFertig, onImEingangZeigen, imEingangOffen }: Props
   const aktuelleSekunde = sichtbar > 0 ? zeilen[sichtbar - 1].t : 0
 
   return (
-    <section className="demo" aria-labelledby="demo-titel">
-      <div className="demo__kopf">
-        <p className="ueberzeile">KI-Anruf</p>
-        <h1 id="demo-titel" className="h2">Du stehst auf der Leiter, das Handy klingelt.</h1>
-        <p className="einleitung">Werkly nimmt an. Such dir ein Beispiel aus und hör zu, was passiert.</p>
-      </div>
-
+    <div className="demo">
       <fieldset className="szenarien">
         <legend className="visually-hidden">Beispiel wählen</legend>
         {szenarien.map((s) => (
@@ -222,6 +220,6 @@ export function AnrufDemo({ onFertig, onImEingangZeigen, imEingangOffen }: Props
           </button>
         </div>
       )}
-    </section>
+    </div>
   )
 }

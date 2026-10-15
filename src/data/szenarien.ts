@@ -1,9 +1,10 @@
 import { betrieb } from './betrieb'
 import { tagLang, tagKurz, werktag, wochentag } from './datum'
+import { standard } from './einstellungen'
 import type { Szenario } from './typen'
 
-const begruessung =
-  'Heizung & Sanitär Müller, guten Tag. Hier ist Werkly, der digitale Assistent des Betriebs. Sie sprechen mit einer KI. Wie kann ich Ihnen helfen?'
+/** Platzhalter, wird im KI-Anruf durch die Begrüßung aus den Einstellungen ersetzt */
+export const BEGRUESSUNG = standard.begruessung
 
 const slot1 = werktag(1)
 const slot2 = werktag(2)
@@ -19,7 +20,7 @@ export const szenarien: Szenario[] = [
     anrufer: 'Petra Schneider',
     zeilen: [
       { t: 0, wer: 'system', text: `Anruf von 030 23125 104. ${betrieb.vorname} ist auf der Baustelle, Werkly nimmt an.` },
-      { t: 2, wer: 'werkly', text: begruessung },
+      { t: 2, wer: 'werkly', text: BEGRUESSUNG },
       { t: 9, wer: 'kunde', text: 'Hallo, bei uns im Keller ist ein Rohr geplatzt. Das Wasser spritzt richtig raus.' },
       { t: 14, wer: 'werkly', text: 'Das ist ein Notfall, ich helfe Ihnen sofort. Wissen Sie, wo der Haupthahn ist? Meist sitzt er neben der Wasseruhr.' },
       { t: 22, wer: 'kunde', text: 'Ja, neben dem Zähler. Ich dreh ihn zu. Okay, ist zu.' },
@@ -61,7 +62,7 @@ export const szenarien: Szenario[] = [
     anrufer: 'Klaus Becker',
     zeilen: [
       { t: 0, wer: 'system', text: `Anruf von 030 23125 117. ${betrieb.vorname} ist auf der Baustelle, Werkly nimmt an.` },
-      { t: 2, wer: 'werkly', text: begruessung },
+      { t: 2, wer: 'werkly', text: BEGRUESSUNG },
       { t: 9, wer: 'kunde', text: 'Ja, Becker hier. Meine Gastherme müsste mal wieder gewartet werden. Letztes Jahr waren Sie auch da.' },
       { t: 15, wer: 'werkly', text: 'Gern, Herr Becker. Ich finde Sie in der Kundenliste: Ahornstraße 5, Vaillant-Gastherme, letzte Wartung im Oktober letzten Jahres. Stimmt das noch?' },
       { t: 24, wer: 'kunde', text: 'Ja, genau.' },
@@ -99,10 +100,10 @@ export const szenarien: Szenario[] = [
     art: 'Angebot',
     beschreibung: 'Neues Bad gewünscht. Werkly holt Fotos per SMS und bereitet das Angebot vor.',
     start: '14:05:40',
-    anrufer: 'Ayşe Yilmaz',
+    anrufer: 'Sandra Krüger',
     zeilen: [
       { t: 0, wer: 'system', text: `Anruf von 030 23125 132. ${betrieb.vorname} ist auf der Baustelle, Werkly nimmt an.` },
-      { t: 2, wer: 'werkly', text: begruessung },
+      { t: 2, wer: 'werkly', text: BEGRUESSUNG },
       { t: 9, wer: 'kunde', text: 'Hallo, wir wollen unser Bad komplett neu machen. Machen Sie so was?' },
       { t: 13, wer: 'werkly', text: 'Ja, Badsanierungen macht Herr Müller regelmäßig. Damit er ein Angebot vorbereiten kann, stelle ich ein paar Fragen. Wie groß ist das Bad ungefähr?' },
       { t: 22, wer: 'kunde', text: 'So acht Quadratmeter.' },
@@ -111,8 +112,8 @@ export const szenarien: Szenario[] = [
       { t: 39, wer: 'werkly', text: 'Verstanden. Ich schicke Ihnen gleich eine SMS mit einem Link. Darüber laden Sie drei oder vier Fotos vom Bad hoch. Dann kann Herr Müller genauer rechnen.' },
       { t: 48, wer: 'kunde', text: 'Gut, mach ich gleich.' },
       { t: 51, wer: 'werkly', text: 'Wie heißen Sie und wo ist das Bad?' },
-      { t: 54, wer: 'kunde', text: 'Ayşe Yilmaz, Birkenallee 3 in Musterstadt.' },
-      { t: 59, wer: 'werkly', text: 'Danke, Frau Yilmaz. Herr Müller meldet sich mit dem Angebot und einem Termin zur Besichtigung. Auf Wiederhören.' },
+      { t: 54, wer: 'kunde', text: 'Sandra Krüger, Birkenallee 3 in Musterstadt.' },
+      { t: 59, wer: 'werkly', text: 'Danke, Frau Krüger. Herr Müller meldet sich mit dem Angebot und einem Termin zur Besichtigung. Auf Wiederhören.' },
       { t: 65, wer: 'system', text: 'Anruf beendet. SMS mit Foto-Link gesendet.' },
       { t: 212, wer: 'system', text: '4 Fotos eingegangen. Angebotsentwurf vorbereitet, wartet auf deine Freigabe.' },
     ],
@@ -122,13 +123,13 @@ export const szenarien: Szenario[] = [
         'Anfrage aufgenommen: 8 m², bodengleiche Dusche, WC, Waschtisch, Fliesen',
         'SMS mit Foto-Link gesendet, 4 Fotos eingegangen',
         'Angebotsentwurf liegt zur Freigabe bereit',
-        'Besichtigung mit Frau Yilmaz noch absprechen',
+        'Besichtigung mit Frau Krüger noch absprechen',
       ],
     },
     anruf: {
       id: 'demo-bad',
       zeit: '14:05',
-      name: 'Ayşe Yilmaz',
+      name: 'Sandra Krüger',
       nummer: '030 23125 132',
       status: 'angebot',
       anliegen: 'Badsanierung, 8 m²',

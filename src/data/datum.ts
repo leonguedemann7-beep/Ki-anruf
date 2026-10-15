@@ -43,3 +43,35 @@ export function uhrzeitPlus(start: string, sekunden: number): string {
   const ss = gesamt % 60
   return [hh, mm, ss].map((x) => String(x).padStart(2, '0')).join(':')
 }
+
+export function plusTage(d: Date, n: number): Date {
+  const x = new Date(d)
+  x.setDate(x.getDate() + n)
+  return x
+}
+
+/** Montag der Woche von `d` */
+export function montag(d: Date): Date {
+  const x = new Date(d)
+  x.setHours(0, 0, 0, 0)
+  const tag = (x.getDay() + 6) % 7
+  x.setDate(x.getDate() - tag)
+  return x
+}
+
+export function gleicherTag(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
+}
+
+export function wochentagKurz(d: Date): string {
+  return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'][d.getDay()]
+}
+
+/** „16.10.“ */
+export function datumKurz(d: Date): string {
+  return `${d.getDate()}.${d.getMonth() + 1}.`
+}
+
+export function euro(betrag: number): string {
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(betrag)
+}

@@ -3,10 +3,20 @@ import { CalendarDays, FileText, Inbox, MessageSquare, PhoneIncoming, Settings }
 import { AnrufDemo } from './components/AnrufDemo'
 import { Eingang } from './components/Eingang'
 import { Logo } from './components/Logo'
-import { Platzhalter } from './components/Platzhalter'
+import { AngebotAnsicht } from './components/AngebotAnsicht'
+import { Ausprobieren } from './components/Ausprobieren'
+import { EinstellungenAnsicht } from './components/EinstellungenAnsicht'
+import { Kalender } from './components/Kalender'
+import { KiAnruf } from './components/KiAnruf'
+import { SmsAnsicht } from './components/SmsAnsicht'
 import { anrufeHeute } from './data/anrufe'
+import { angebotKrueger, angebotWeber } from './data/angebote'
 import { betrieb, hinweisBeispiel } from './data/betrieb'
-import type { Anruf } from './data/typen'
+import { laden } from './data/einstellungen'
+import { smsAusDemo, smsBasis } from './data/sms'
+import { szenarien } from './data/szenarien'
+import { termineAusDemo, termineBasis } from './data/termine'
+import type { Anruf, Sms } from './data/typen'
 
 type Tab = 'demo' | 'eingang' | 'kalender' | 'sms' | 'angebot' | 'einstellungen'
 
@@ -35,15 +45,25 @@ export default function App() {
   const [tab, setTab] = useState<Tab>(breit ? 'eingang' : 'demo')
   const [anrufe, setAnrufe] = useState<Anruf[]>(anrufeHeute)
   const [offenId, setOffenId] = useState<string | null>(null)
+  const [gespielt, setGespielt] = useState<string[]>([])
+  const [gesendet, setGesendet] = useState<Record<string, Sms[]>>({})
+  const [einstellungen, setEinstellungen] = useState(laden)
 
   useEffect(() => {
     if (breit && tab === 'demo') setTab('eingang')
   }, [breit, tab])
 
   function anrufAusDemo(anruf: Anruf) {
+    const szenario = szenarien.find((sz) => sz.anruf.id === anruf.id)
+    if (szenario) setGespielt((g) => (g.includes(szenario.id) ? g : [...g, szenario.id]))
     setAnrufe((liste) =>
       [{ ...anruf, neu: true }, ...liste.filter((a) => a.id !== anruf.id)].sort((a, b) => b.zeit.localeCompare(a.zeit)),
     )
+  }
+
+  function wechsle(neu: Tab) {
+    setTab(neu)
+    if (!breit) window.scrollTo({ top: 0 })
   }
 
   function imEingangZeigen(id: string) {
@@ -56,14 +76,34 @@ export default function App() {
     setAnrufe((liste) => liste.map((a) => (a.id === id ? { ...a, status: 'erledigt' } : a)))
   }
 
+  function smsSenden(id: string, text: string) {
+    const zeit = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+    setGesendet((g) => ({ ...g, [id]: [...(g[id] ?? []), { von: 'du', zeit, text }] }))
+  }
+
+  // Was der KI-Anruf erzeugt, taucht in Kalender, SMS und Angebot auf.
+  const termine = [...termineBasis, ...gespielt.flatMap((id) => (termineAusDemo[id] ? [termineAusDemo[id]] : []))]
+  const verlaeufe = [...[...gespielt].reverse().flatMap((id) => (smsAusDemo[id] ? [smsAusDemo[id]] : [])), ...smsBasis].map(
+    (v) => ({ ...v, nachrichten: [...v.nachrichten, ...(gesendet[v.id] ?? [])] }),
+  )
+  const angebote = gespielt.includes('bad') ? [angebotKrueger, angebotWeber] : [angebotWeber]
+
   const neue = anrufe.filter((a) => a.neu).length
   const sichtbareTabs = breit ? tabs.filter((t) => t.id !== 'demo') : tabs
 
-  const demo = <AnrufDemo
-      onFertig={anrufAusDemo}
-      onImEingangZeigen={imEingangZeigen}
-      imEingangOffen={breit && tab === 'eingang' ? offenId : null}
+  const demo = (
+    <KiAnruf
+      beispiele={
+        <AnrufDemo
+          onFertig={anrufAusDemo}
+          onImEingangZeigen={imEingangZeigen}
+          imEingangOffen={breit && tab === 'eingang' ? offenId : null}
+          begruessung={einstellungen.begruessung}
+        />
+      }
+      ausprobieren={<Ausprobieren key={einstellungen.begruessung} einstellungen={einstellungen} />}
     />
+  )
 
   const app = (
     <div className="app">
@@ -75,7 +115,7 @@ export default function App() {
           className="icon-knopf"
           aria-label="Einstellungen"
           aria-pressed={tab === 'einstellungen'}
-          onClick={() => setTab('einstellungen')}
+          onClick={() => wechsle('einstellungen')}
         >
           <Settings size={24} aria-hidden="true" />
         </button>
@@ -87,18 +127,10 @@ export default function App() {
         {tab === 'eingang' && (
           <Eingang anrufe={anrufe} offenId={offenId} setOffenId={setOffenId} alsErledigt={alsErledigt} />
         )}
-        {tab === 'kalender' && (
-          <Platzhalter titel="Kalender" text="Hier kommt die Wochenansicht mit allen Terminen, die Werkly eingetragen hat. Sie folgt im nächsten Schritt." />
-        )}
-        {tab === 'sms' && (
-          <Platzhalter titel="SMS" text="Hier kommt der Verlauf mit dem Kunden, mit Bestätigung und Erinnerung. Er folgt im nächsten Schritt." />
-        )}
-        {tab === 'angebot' && (
-          <Platzhalter titel="Angebot" text="Hier kommt der Angebotsentwurf mit Positionen, Netto, MwSt. und Brutto zum Freigeben. Er folgt im nächsten Schritt." />
-        )}
-        {tab === 'einstellungen' && (
-          <Platzhalter titel="Einstellungen" text="Hier stellst du Öffnungszeiten, Notdienst, Gewerke und die Begrüßung ein. Das folgt im nächsten Schritt." />
-        )}
+        {tab === 'kalender' && <Kalender termine={termine} />}
+        {tab === 'sms' && <SmsAnsicht verlaeufe={verlaeufe} onSenden={smsSenden} />}
+        {tab === 'angebot' && <AngebotAnsicht key={angebote.length} angebote={angebote} />}
+        {tab === 'einstellungen' && <EinstellungenAnsicht werte={einstellungen} onSpeichern={setEinstellungen} />}
       </main>
 
       <nav className="tableiste" aria-label="Hauptmenü">
@@ -108,7 +140,7 @@ export default function App() {
             type="button"
             className="tableiste__knopf"
             aria-current={tab === id ? 'page' : undefined}
-            onClick={() => setTab(id)}
+            onClick={() => wechsle(id)}
           >
             <span className="tableiste__icon">
               <Icon size={24} aria-hidden="true" />
