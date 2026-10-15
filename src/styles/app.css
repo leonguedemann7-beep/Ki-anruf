@@ -1,0 +1,404 @@
+/* Werkly Prototyp. Farben, Schriften, Abstände kommen aus werkly.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 26px;
+}
+
+h1, h2, h3, p, ul, ol, fieldset { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+fieldset { border: 0; min-width: 0; }
+button { font: inherit; color: inherit; }
+img { display: block; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Logo je nach Hintergrund */
+.logo { width: auto; }
+.logo--dunkel-grund { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo--hell-grund { display: none; }
+  :root:not([data-theme="light"]) .logo--dunkel-grund { display: block; }
+}
+:root[data-theme="dark"] .logo--hell-grund { display: none; }
+:root[data-theme="dark"] .logo--dunkel-grund { display: block; }
+
+/* Schriftstile */
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: 28px;
+  line-height: 34px;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+.ueberzeile, .label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ueberzeile { color: var(--orange-text); margin-bottom: var(--space-2); }
+.label { color: var(--ink-muted); }
+.data {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.einleitung { font-size: 19px; line-height: 30px; color: var(--ink-muted); margin-top: var(--space-2); max-width: 65ch; }
+
+/* Buttons: mindestens 48px hoch, wegen Arbeitshandschuhen */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink);
+}
+.btn--primaer { background: var(--orange); border-color: var(--orange); color: var(--on-orange); }
+.btn--primaer:hover { background: #d95d15; border-color: #d95d15; }
+.btn--sekundaer { border-color: var(--ink); }
+.btn--sekundaer:hover { background: var(--surface); }
+.btn--leise { border: 1px solid var(--line); background: var(--surface-raised); padding: 12px 16px; font-weight: 400; }
+.btn--leise:hover { border-color: var(--ink-muted); }
+.btn--leise[aria-pressed="true"] { border-color: var(--ink); font-weight: 700; }
+
+.icon-knopf {
+  display: inline-grid; place-items: center;
+  width: 48px; height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  color: var(--ink);
+  cursor: pointer;
+}
+.icon-knopf[aria-pressed="true"] { border: 2px solid var(--ink); }
+
+/* Status-Chips: immer mit Wort */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 13px; line-height: 16px; font-weight: 500;
+  white-space: nowrap;
+}
+.chip--notfall { color: var(--danger); border-color: var(--danger); }
+.chip--termin { color: var(--success); border-color: var(--success); }
+.chip--rueckruf { background: var(--orange-tint); border-color: var(--orange-tint); color: var(--ink); }
+.chip--rueckruf svg { color: var(--orange-text); }
+.chip--angebot { color: var(--ink); border-color: var(--ink-muted); }
+.chip--erledigt { color: var(--ink-muted); }
+
+/* ---------- App (Handy-Ansicht) ---------- */
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+.app__kopf {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  min-height: 64px;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--line);
+}
+.app__betrieb {
+  flex: 1;
+  font-size: 15px; line-height: 20px;
+  color: var(--ink-muted);
+  text-align: right;
+}
+.app__hinweis {
+  padding: var(--space-2) var(--space-3);
+  font-size: 15px; line-height: 22px;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--line);
+}
+.app__inhalt {
+  flex: 1;
+  padding: var(--space-4) var(--space-3) calc(80px + var(--space-4));
+}
+
+.tableiste {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 3;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: var(--surface-raised);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tableiste__knopf {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 64px;
+  padding: 6px 2px;
+  border: 0;
+  border-top: 3px solid transparent;
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 15px; line-height: 18px;
+  cursor: pointer;
+}
+.tableiste__knopf[aria-current="page"] { color: var(--ink); font-weight: 700; border-top-color: var(--orange); }
+.tableiste__knopf:focus-visible { outline-offset: -4px; }
+.tableiste__icon { position: relative; display: inline-flex; }
+.zaehler {
+  position: absolute; top: -6px; right: -12px;
+  min-width: 20px; height: 20px; padding: 0 5px;
+  border-radius: var(--radius-pill);
+  background: var(--orange); color: var(--on-orange);
+  font-family: var(--font-mono); font-size: 13px; line-height: 20px; font-weight: 500;
+  text-align: center;
+}
+
+.ansicht__kopf { margin-bottom: var(--space-4); }
+.zusammenfassung { margin-top: var(--space-2); color: var(--ink-muted); }
+.zusammenfassung .data { color: var(--ink); }
+
+.filter {
+  display: flex; gap: var(--space-2);
+  overflow-x: auto;
+  margin: 0 calc(-1 * var(--space-3)) var(--space-4);
+  padding: 2px var(--space-3) 4px;
+  scrollbar-width: none;
+}
+.filter__knopf {
+  flex: none;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  font-size: 15px;
+  cursor: pointer;
+}
+.filter__knopf[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--on-navy); font-weight: 700; }
+
+.anrufe { display: flex; flex-direction: column; gap: var(--space-3); }
+.anruf {
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-3) var(--space-3);
+}
+.anruf--offen { border-color: var(--ink); }
+.anruf--neu { border-left: 4px solid var(--orange); }
+.anruf__kopf {
+  display: flex; flex-direction: column; gap: 4px;
+  width: calc(100% + 2 * var(--space-3));
+  margin: 0 calc(-1 * var(--space-3));
+  padding: var(--space-3) var(--space-3) var(--space-2);
+  border: 0; border-radius: var(--radius-md);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.anruf__zeile { display: flex; align-items: center; gap: var(--space-2); width: 100%; }
+.anruf__zeit { color: var(--ink-muted); }
+.anruf__pfeil { margin-left: auto; color: var(--ink-muted); transition: transform 150ms; }
+.anruf--offen .anruf__pfeil { transform: rotate(180deg); }
+.anruf__name { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 26px; }
+.anruf__anliegen { margin-bottom: 6px; }
+.anruf__kurz { color: var(--ink-muted); }
+.anruf__nummer {
+  display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;
+  margin-top: var(--space-2);
+  color: var(--ink);
+}
+.anruf__dauer { margin-left: auto; font-size: 15px; color: var(--ink-muted); }
+.anruf__details {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+.haken-liste { margin: var(--space-2) 0 var(--space-3); display: flex; flex-direction: column; gap: 4px; }
+.haken-liste li { display: flex; gap: var(--space-2); align-items: flex-start; }
+.haken-liste svg { flex: none; margin-top: 4px; color: var(--success); }
+.anruf__aktionen { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.anruf__aktionen .btn { flex: 1 1 140px; }
+.neu-marke {
+  font-family: var(--font-mono); font-size: 13px; line-height: 16px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 2px 8px; border-radius: var(--radius-sm);
+  background: var(--orange-tint); color: var(--ink);
+}
+.leer, .hinweis {
+  padding: var(--space-3);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink-muted);
+}
+.hinweis { background: var(--surface-raised); border-style: solid; }
+
+/* ---------- Anruf-Demo ---------- */
+.demo { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.szenarien { display: grid; gap: var(--space-2); }
+.szenario {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-2);
+  align-items: baseline;
+  padding: var(--space-3);
+  min-height: 48px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+.szenario:hover { border-color: var(--ink-muted); }
+.szenario--aktiv { border: 2px solid var(--ink); background: var(--orange-tint); padding: calc(var(--space-3) - 1px); }
+.szenario:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.szenario__art {
+  grid-column: 1 / -1;
+  font-family: var(--font-mono); font-size: 13px; line-height: 16px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+.szenario--aktiv .szenario__art { color: var(--ink); }
+.szenario__titel { grid-column: 1 / -1; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 26px; margin-top: 4px; }
+.szenario__text { grid-column: 1 / -1; color: var(--ink-muted); margin-top: 4px; }
+.szenario--aktiv .szenario__text { color: var(--ink); }
+
+.steuerung { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.steuerung .btn--primaer, .steuerung .btn--sekundaer { flex: 1 1 100%; }
+
+.gespraech {
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.gespraech__kopf {
+  display: flex; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--navy);
+  color: var(--on-navy);
+}
+.gespraech__kopf > div { display: flex; flex-direction: column; gap: 2px; }
+.gespraech__kopf .label { color: var(--on-navy); opacity: 0.8; }
+.gespraech__name { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 26px; }
+.gespraech__uhr { text-align: right; align-items: flex-end; }
+.gespraech__leer { padding: var(--space-4) var(--space-3); color: var(--ink-muted); }
+
+.verlauf { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-3); }
+.verlauf:empty { display: none; }
+.zeile { display: flex; flex-direction: column; max-width: 88%; animation: auftauchen 220ms ease-out; }
+.zeile__meta { display: flex; gap: var(--space-2); align-items: baseline; margin-bottom: 4px; }
+.zeile__meta .data { font-size: 13px; color: var(--ink-muted); }
+.zeile__blase { padding: 10px 14px; border-radius: var(--radius-md); }
+.zeile--werkly { align-self: flex-start; }
+.zeile--werkly .zeile__blase { background: var(--navy); color: var(--on-navy); }
+.zeile--kunde { align-self: flex-end; align-items: flex-end; }
+.zeile--kunde .zeile__blase { background: var(--surface); border: 1px solid var(--line); }
+.zeile--system { align-self: stretch; max-width: none; }
+.zeile__system {
+  padding: var(--space-2) var(--space-3);
+  border-left: 4px solid var(--orange);
+  background: var(--surface);
+  font-size: 15px; line-height: 22px;
+}
+.zeile__system .data { color: var(--ink-muted); margin-right: 4px; font-size: 13px; }
+.zeile--tippt .zeile__blase { color: var(--ink-muted); background: transparent; border: 1px dashed var(--line); }
+.zeile--werkly.zeile--tippt .zeile__blase { color: var(--ink-muted); background: transparent; }
+.punkte span { animation: blinken 1.2s infinite; }
+.punkte span:nth-child(2) { animation-delay: 0.2s; }
+.punkte span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes auftauchen { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes blinken { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .zeile, .punkte span { animation: none; }
+  .anruf__pfeil { transition: none; }
+}
+
+.ergebnis {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--orange);
+  border-radius: var(--radius-md);
+}
+.ergebnis .ueberzeile { margin: 0; }
+.ergebnis__liste { display: flex; flex-direction: column; gap: var(--space-2); }
+.ergebnis__liste li { display: flex; gap: var(--space-2); align-items: flex-start; }
+.ergebnis__haken { flex: none; margin-top: 3px; color: var(--success); }
+
+/* ---------- Laptop: Demo links, Handy rechts ---------- */
+.buehne { max-width: 1280px; margin: 0 auto; padding: var(--space-4) var(--space-5) var(--space-5); }
+.buehne__kopf {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--line);
+}
+.buehne__hinweis { color: var(--ink-muted); font-size: 15px; line-height: 22px; max-width: 70ch; }
+.buehne__raster {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 414px;
+  gap: var(--space-6);
+  align-items: start;
+}
+.buehne .szenarien { grid-template-columns: repeat(3, 1fr); }
+.buehne .szenario { align-content: start; }
+.buehne .steuerung .btn--primaer, .buehne .steuerung .btn--sekundaer { flex: 0 0 auto; }
+.buehne .verlauf { max-height: 440px; overflow-y: auto; }
+.buehne__handy { position: sticky; top: var(--space-4); }
+.handy {
+  width: 414px;
+  height: min(820px, calc(100dvh - 120px));
+  border: 12px solid var(--navy);
+  border-radius: 40px;
+  overflow: hidden;
+  background: var(--surface);
+  container-type: inline-size;
+}
+.handy .app { min-height: 0; height: 100%; }
+.handy .app__kopf { position: static; }
+.handy .app__inhalt { overflow-y: auto; padding-bottom: var(--space-4); }
+.handy .tableiste { position: static; }
+.buehne__unterschrift { margin-top: var(--space-2); text-align: center; font-size: 15px; color: var(--ink-muted); }
+
+/* Beim automatischen Scrollen nicht unter Kopf und Tableiste verschwinden */
+.zeile, .ergebnis, .anruf { scroll-margin: 88px 0 96px; }
+.handy .zeile, .handy .anruf { scroll-margin: 8px; }

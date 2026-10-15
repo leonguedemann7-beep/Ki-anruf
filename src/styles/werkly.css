@@ -1,0 +1,67 @@
+/* Werkly Design-Tokens, erzeugt aus werkly-tokens.json */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root {
+  --surface: #fafaf7;
+  --surface-raised: #ffffff;
+  --line: #dcdfe4;
+  --ink: #0d1b34;
+  --ink-muted: #4f5b6e;
+  --navy: #0d1b34;
+  --on-navy: #f4f3ee;
+  --orange: #f06a1e;
+  --on-orange: #0d1b34;
+  --orange-text: #a3461b;
+  --orange-tint: #fde6d6;
+  --success: #1d7a4a;
+  --danger: #b42318;
+  --focus: #0d1b34;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #0a1322;
+    --surface-raised: #13213a;
+    --line: #263552;
+    --ink: #eef1f5;
+    --ink-muted: #a3adbd;
+    --navy: #1c2d4f;
+    --on-navy: #f4f3ee;
+    --orange: #f06a1e;
+    --on-orange: #0d1b34;
+    --orange-text: #ff8a4c;
+    --orange-tint: #3a2213;
+    --success: #4cc38a;
+    --danger: #f97066;
+    --focus: #f06a1e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --surface: #0a1322;
+  --surface-raised: #13213a;
+  --line: #263552;
+  --ink: #eef1f5;
+  --ink-muted: #a3adbd;
+  --navy: #1c2d4f;
+  --on-navy: #f4f3ee;
+  --orange: #f06a1e;
+  --on-orange: #0d1b34;
+  --orange-text: #ff8a4c;
+  --orange-tint: #3a2213;
+  --success: #4cc38a;
+  --danger: #f97066;
+  --focus: #f06a1e;
+  color-scheme: dark;
+}
