@@ -89,7 +89,7 @@ export function AnrufDemo({ onFertig, onImEingangZeigen, imEingangOffen }: Props
   return (
     <section className="demo" aria-labelledby="demo-titel">
       <div className="demo__kopf">
-        <p className="ueberzeile">Anruf-Demo</p>
+        <p className="ueberzeile">KI-Anruf</p>
         <h1 id="demo-titel" className="h2">Du stehst auf der Leiter, das Handy klingelt.</h1>
         <p className="einleitung">Werkly nimmt an. Such dir ein Beispiel aus und hör zu, was passiert.</p>
       </div>

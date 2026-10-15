@@ -13,7 +13,7 @@ export interface Anruf {
   /** Was Werkly erledigt hat */
   erledigt: string[]
   dauer: string
-  /** Kam gerade aus der Anruf-Demo */
+  /** Kam gerade aus dem KI-Anruf */
   neu?: boolean
 }
 

@@ -11,7 +11,7 @@ import type { Anruf } from './data/typen'
 type Tab = 'demo' | 'eingang' | 'kalender' | 'sms' | 'angebot' | 'einstellungen'
 
 const tabs: { id: Tab; text: string; Icon: typeof Inbox }[] = [
-  { id: 'demo', text: 'Demo', Icon: PhoneIncoming },
+  { id: 'demo', text: 'KI-Anruf', Icon: PhoneIncoming },
   { id: 'eingang', text: 'Eingang', Icon: Inbox },
   { id: 'kalender', text: 'Kalender', Icon: CalendarDays },
   { id: 'sms', text: 'SMS', Icon: MessageSquare },

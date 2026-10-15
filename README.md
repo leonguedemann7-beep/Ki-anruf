@@ -6,11 +6,11 @@ Alle Daten sind Beispieldaten des erfundenen Betriebs „Heizung & Sanitär Mül
 
 ## Was drin ist
 
-- **Anruf-Demo:** drei Gespräche (Rohrbruch, Heizungswartung, Badsanierung) laufen Zeile für Zeile ab. Am Ende steht, was Werkly daraus gemacht hat, und der Anruf landet im Eingang.
+- **KI-Anruf:** drei Gespräche (Rohrbruch, Heizungswartung, Badsanierung) laufen Zeile für Zeile ab. Am Ende steht, was Werkly daraus gemacht hat, und der Anruf landet im Eingang.
 - **Eingang:** alle Anrufe des Tages mit Status, Kurzfassung und Telefonnummer.
 - Kalender, SMS, Angebot und Einstellungen folgen im nächsten Schritt.
 
-Am Handy ist die Demo ein eigener Reiter. Ab 1024px Breite steht die Demo links und die App im Handyrahmen rechts.
+Am Handy ist der KI-Anruf ein eigener Reiter. Ab 1024px Breite steht der KI-Anruf links und die App im Handyrahmen rechts.
 
 ## Starten
 
