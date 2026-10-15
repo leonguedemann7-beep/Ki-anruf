@@ -134,7 +134,7 @@ img { display: block; }
   background: var(--surface);
 }
 .app__kopf {
-  position: sticky; top: 0; z-index: 2;
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2;
   display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-2) var(--space-3);
   min-height: 64px;
